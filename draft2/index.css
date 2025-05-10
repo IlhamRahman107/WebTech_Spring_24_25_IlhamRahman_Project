@@ -24,18 +24,22 @@
   position: relative;
 }
 
+#main-search {
+  padding: 10px;
+  border-radius: 5px;
+  width: 500px;
+}
+
 .btn-nav {
-  height: 30px;
+  padding: 10px;
+  border-radius: 5px;
   background-color: #93b873;
   cursor: pointer;
+  transition: 0.25s;
 }
 
-.btn-nav :hover {
-  background-color: white;
-}
-
-.btn-nav a {
-  color: black;
+.btn-nav:hover {
+  background-color: #e4f2d4;
 }
 
 /* advanced search */
@@ -92,7 +96,7 @@
 }
 
 .heading-container {
-  margin: 0px 50px 0px 50px;
+  margin: 0px 50px 100px 50px;
   text-align: center;
 }
 
@@ -114,6 +118,7 @@
 #top-ten-container,
 #movie-rec-container,
 #tvseries-rec-container,
+#search-result-container,
 #adv-search-result-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

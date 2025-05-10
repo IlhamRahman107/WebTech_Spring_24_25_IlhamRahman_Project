@@ -1,3 +1,56 @@
+// search
+let allData = [];
+
+Promise.all([
+  fetch("./database/shows.json").then((res) => res.json()),
+  fetch("./database/top-movies.json").then((res) => res.json()),
+  fetch("./database/top-series.json").then((res) => res.json()),
+]).then(([movies, tvseries, topten]) => {
+  allData = [...movies, ...tvseries, ...topten];
+});
+
+const searchInput = document.getElementById("main-search");
+const resultContainer = document.getElementById("search-result-container");
+
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.trim().toLowerCase();
+  resultContainer.innerHTML = "";
+
+  if (query === "") {
+    return;
+  }
+
+  const filtered = allData.filter(
+    (item) =>
+      item.title.toLowerCase().includes(query) ||
+      (item.genre && item.genre.toLowerCase().includes(query)) ||
+      (item.year && item.year.toString().includes(query)) ||
+      (item.cast && item.cast.toLowerCase().includes(query))
+  );
+
+  if (filtered.length === 0) {
+    resultContainer.innerHTML = "<p>No results found.</p>";
+    return;
+  }
+
+  filtered.forEach((item) => {
+    const div = document.createElement("div");
+    div.classList.add("show-card");
+
+    div.innerHTML = `
+      <img src="${item.poster}" alt="${item.title}" style="width:100%;">
+      <div class="info">
+        <h3 class="info-header">${item.title}</h3>
+        <p class="info-rating">⭐ ${item.rating}</p>
+        <button class="info-btn">Watchlist</button>
+        <button class="info-btn">Trailer</button>
+      </div>
+    `;
+
+    resultContainer.appendChild(div);
+  });
+});
+
 // advanced search
 function adv_search() {
   const adv_search = document.getElementById("adv-search");

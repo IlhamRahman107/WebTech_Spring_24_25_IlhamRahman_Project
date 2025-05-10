@@ -17,16 +17,25 @@
           <p class="title1">RevoTV <small class="title2">+</small></p>
         </div>
         <div>
-          <input type="search" placeholder="search RevoTV" name="" id="" />
+          <input
+            type="search"
+            placeholder="Search RevoTV"
+            name=""
+            id="main-search"
+          />
           <button class="btn-nav" onclick="return adv_search()">ASearch</button>
-          <button class="btn-nav">Actor Profile</button>
-          <button class="btn-nav"><a class="" href="">Watchlist</a></button>
-          <button class="btn-nav"><a href=""></a>Signin</button>
+          <a href="#">Watchlist</a>
+          <a href="#">Signin</a>
         </div>
       </nav>
 
       <!-- advanced search -->
       <section id="adv-search"></section>
+
+      <!-- search results-->
+      <section id="search-results" class="container">
+        <div id="search-result-container"></div>
+      </section>
 
       <!-- advanced search results -->
       <section id="adv-search-results" class="container">
