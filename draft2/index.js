@@ -235,6 +235,30 @@ fetch("./database/top-movies.json")
   })
   .catch((error) => console.error("Error loading movies: ", error));
 
+// display actors/actresses
+const top_actor_actress_container = document.getElementById(
+  "top-actor-actress-container"
+);
+
+fetch("./database/actor-profile.json")
+  .then((response) => response.json())
+  .then((casts) => {
+    const top_actors_actresses = casts.slice(0, 5);
+    top_actors_actresses.forEach((cast) => {
+      const card = document.createElement("div");
+      card.classList.add("show-card");
+      card.innerHTML = `
+        <img src="${cast.poster}" alt="${cast.name}">
+        <div class="info">
+          <h2 class="cast-name">${cast.rank}</h2>
+          <h2 class="cast-name">${cast.name}</h2>
+        </div>
+      `;
+      top_actor_actress_container.appendChild(card);
+    });
+  })
+  .catch((error) => console.error("Error loading movies: ", error));
+
 // display tvSeries recomendations
 const tvseries_rec_container = document.getElementById(
   "tvseries-rec-container"

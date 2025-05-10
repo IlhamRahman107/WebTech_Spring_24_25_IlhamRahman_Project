@@ -115,11 +115,17 @@
   margin-bottom: 20px;
 }
 
+#search-result-container,
+#adv-search-result-container,
 #top-ten-container,
 #movie-rec-container,
-#tvseries-rec-container,
-#search-result-container,
-#adv-search-result-container {
+#tvseries-rec-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+#top-actor-actress-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
@@ -151,6 +157,11 @@
 
 .info-rating {
   margin: 15px 0px 15px 0px;
+}
+
+.cast-name {
+  margin: 15px 0px 15px 0px;
+  text-align: center;
 }
 
 .info-btn {
