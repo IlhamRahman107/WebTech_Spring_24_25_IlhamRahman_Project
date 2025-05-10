@@ -149,11 +149,6 @@ fetch("./database/shows.json")
         <div class="info">
           <h2 class="info-header">${show.rank}. ${show.title}</h2>
           <p class="info-rating">⭐ ${show.rating}</p>
-          <p class="info-rating">${show.category}</p>
-          <p class="info-rating">${show.genre}</p>
-          <p class="info-rating">${show.runtime}</p>
-          <p class="info-rating">${show.year}</p>
-          <p class="info-rating">${show.cast}</p>
           <button class="info-btn">Watchlist</button>
           <button class="info-btn">Trailer</button>
         </div>
