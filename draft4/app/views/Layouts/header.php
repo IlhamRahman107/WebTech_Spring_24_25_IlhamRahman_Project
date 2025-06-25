@@ -13,10 +13,10 @@ echo <<<HTML
       <h4 class="title1">RevoTV <small class="title2">+</small></h4>
     </div>
     <div>
-      <input class="search" type="search" placeholder="search RevoTV" name="search" id="search" />
+      <input class="search" type="search" placeholder="Search RevoTV" id="search" />
       <button class="btn-nav" onclick="return adv_search()"><a href="#">ASearch</a></button>
       <button class="btn-nav"><a href="../../index.php">Home</a></button>
-      <button class="btn-nav"><a href="#">Actor Profile</a></button>
+      <button class="btn-nav"><a href="/web-tech-project/app/views/Layouts/actor_profiles.php">Actor Profile</a></button>
 HTML;
 
 if ($loggedIn) {
@@ -36,9 +36,7 @@ echo <<<HTML
     </div>
   </nav>
 
-  <section id="search-results" class="container">
-    <div id="search-result-container"></div>
-  </section>
+  <div class="container" id="search-results-container"></div>
 
   <section id="adv-search"></section>
   <section id="adv-search-results" class="container">

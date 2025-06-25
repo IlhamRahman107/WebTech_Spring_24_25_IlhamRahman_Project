@@ -130,7 +130,8 @@
 #top-ten-container,
 #movie-rec-container,
 #tvseries-rec-container,
-#adv-search-result-container {
+#adv-search-result-container,
+#actor-profiles-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
