@@ -39,11 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $result = mysqli_stmt_get_result($stmt);
 
     if ($admin = mysqli_fetch_assoc($result)) {
-        // ✅ Use this if you are NOT hashing passwords:
         if ($admin['Admin_Password'] === $password) {
-
-            // 🔐 Replace with this if you are storing hashed passwords:
-            // if (password_verify($password, $admin['Admin_Password'])) {
 
             $_SESSION['admin_id'] = $admin['Admin_Id'];
             $_SESSION['admin_name'] = $admin['Admin_Name'];

@@ -1,5 +1,58 @@
-document.addEventListener("DOMContentLoaded", function () {
+// search
+let allData = [];
 
+Promise.all([
+  fetch("./database/shows.json").then((res) => res.json()),
+  fetch("./database/top-movies.json").then((res) => res.json()),
+  fetch("./database/top-series.json").then((res) => res.json()),
+]).then(([movies, tvseries, topten]) => {
+  allData = [...movies, ...tvseries, ...topten];
+});
+
+const searchInput = document.getElementById("search");
+const resultContainer = document.getElementById("search-results-container");
+
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.trim().toLowerCase();
+  resultContainer.innerHTML = "";
+
+  if (query === "") {
+    return;
+  }
+
+  const filtered = allData.filter(
+    (item) =>
+      item.title.toLowerCase().includes(query) ||
+      (item.genre && item.genre.toLowerCase().includes(query)) ||
+      (item.year && item.year.toString().includes(query)) ||
+      (item.cast && item.cast.toLowerCase().includes(query))
+  );
+
+  if (filtered.length === 0) {
+    resultContainer.innerHTML = "<p>No results found.</p>";
+    return;
+  }
+
+  filtered.forEach((item) => {
+    const div = document.createElement("div");
+    div.classList.add("show-card");
+
+    div.innerHTML = `
+      <img src="${item.poster}" alt="${item.title}" style="width:100%;">
+      <div class="info">
+        <h3 class="info-header">${item.title}</h3>
+        <p class="info-rating">⭐ ${item.rating}</p>
+        <button class="info-btn">Watchlist</button>
+        <button class="info-btn">Trailer</button>
+      </div>
+    `;
+
+    resultContainer.appendChild(div);
+  });
+});
+
+// advanced search
+document.addEventListener("DOMContentLoaded", function () {
   function adv_search() {
     const adv_search = document.getElementById("adv-search");
 
@@ -10,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     adv_search.innerHTML = `
       <div class="adv-search-box">
-        <h3>Advanced Search</h3>
+        <h3 id="adv-search-header">Advanced Search</h3>
         <form id="adv-search-form">
           <label for="category">Category:</label>
           <select id="category" name="category">
@@ -66,14 +119,18 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     `;
 
-    document.getElementById("adv-search-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      performAdvancedSearch();
-    });
+    document
+      .getElementById("adv-search-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+        performAdvancedSearch();
+      });
 
-    document.getElementById("cancel-search-btn").addEventListener("click", () => {
-      adv_search.innerHTML = "";
-    });
+    document
+      .getElementById("cancel-search-btn")
+      .addEventListener("click", () => {
+        adv_search.innerHTML = "";
+      });
   }
 
   window.adv_search = adv_search;
@@ -82,7 +139,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const category = document.getElementById("category").value;
     const genre = document.getElementById("genre").value;
     const year = document.getElementById("year").value;
-    const resultContainer = document.getElementById("adv-search-result-container");
+    const resultContainer = document.getElementById(
+      "adv-search-result-container"
+    );
     resultContainer.innerHTML = "";
 
     Promise.all([
@@ -90,24 +149,24 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch("Json/top-movies.json").then((res) => res.json()),
       fetch("Json/top-series.json").then((res) => res.json()),
     ])
-    .then(([shows, movies, series]) => {
-      const all_items = [...shows, ...movies, ...series];
+      .then(([shows, movies, series]) => {
+        const all_items = [...shows, ...movies, ...series];
 
-      const results = all_items.filter((item) => {
-        return (
-          (!category || item.category?.includes(category)) &&
-          (!genre || item.genre?.includes(genre)) &&
-          (!year || item.year?.toString().includes(year))
-        );
-      });
+        const results = all_items.filter((item) => {
+          return (
+            (!category || item.category?.includes(category)) &&
+            (!genre || item.genre?.includes(genre)) &&
+            (!year || item.year?.toString().includes(year))
+          );
+        });
 
-      if (results.length === 0) {
-        resultContainer.innerHTML = "<p>No results found.</p>";
-      } else {
-        results.forEach((item) => {
-          const card = document.createElement("div");
-          card.classList.add("show-card");
-          card.innerHTML = `
+        if (results.length === 0) {
+          resultContainer.innerHTML = "<p>No results found.</p>";
+        } else {
+          results.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add("show-card");
+            card.innerHTML = `
             <img src="${item.poster}" alt="${item.title}">
             <div class="info">
               <h2 class="info-header">${item.title}</h2>
@@ -119,16 +178,18 @@ document.addEventListener("DOMContentLoaded", function () {
               <button class="info-btn details-btn" data-title="${item.title}">Details</button>
             </div>
           `;
-          resultContainer.appendChild(card);
-        });
-      }
-    })
-    .catch((error) => console.error("Error fetching data: ", error));
+            resultContainer.appendChild(card);
+          });
+        }
+      })
+      .catch((error) => console.error("Error fetching data: ", error));
   }
 
   const top_ten_container = document.getElementById("top-ten-container");
   const movie_rec_container = document.getElementById("movie-rec-container");
-  const tvseries_rec_container = document.getElementById("tvseries-rec-container");
+  const tvseries_rec_container = document.getElementById(
+    "tvseries-rec-container"
+  );
 
   if (top_ten_container) {
     fetch("Json/shows.json")
@@ -144,7 +205,9 @@ document.addEventListener("DOMContentLoaded", function () {
               <p class="info-rating">⭐ ${show.rating}</p>
               <button class="info-btn">Watchlist</button>
               <button class="info-btn">Trailer</button>
-              <button class="info-btn details-btn" data-title="${show.title}">Details</button>
+              <button class="info-btn details-btn" data-title="${
+                show.title
+              }">Details</button>
             </div>
           `;
           top_ten_container.appendChild(card);
@@ -204,35 +267,48 @@ document.addEventListener("DOMContentLoaded", function () {
   // Details button click handler (global)
   document.addEventListener("click", function (e) {
     if (e.target && e.target.classList.contains("details-btn")) {
-       if (!isLoggedIn) {
-            alert("You must be logged in to view details.");
-            return;
-        }
+      if (!isLoggedIn) {
+        alert("You must be logged in to view details.");
+        return;
+      }
       const title = e.target.getAttribute("data-title");
 
       Promise.all([
         fetch("Json/shows.json").then((res) => res.json()),
         fetch("Json/top-movies.json").then((res) => res.json()),
-        fetch("Json/top-series.json").then((res) => res.json())
+        fetch("Json/top-series.json").then((res) => res.json()),
       ])
-      .then(([shows, movies, series]) => {
-        const allItems = [...shows, ...movies, ...series];
-        const item = allItems.find(i => i.title === title);
+        .then(([shows, movies, series]) => {
+          const allItems = [...shows, ...movies, ...series];
+          const item = allItems.find((i) => i.title === title);
 
-        if (item) {
-          document.getElementById("modal-poster").src = item.poster || "";
-          document.getElementById("modal-title").textContent = item.title || "";
-          document.getElementById("modal-rating").textContent = `Rating: ⭐ ${item.rating || "-"}`;
-          document.getElementById("modal-category").textContent = `Category: ${item.category || "-"}`;
-          document.getElementById("modal-genre").textContent = `Genre: ${item.genre || "-"}`;
-          document.getElementById("modal-runtime").textContent = `Runtime: ${item.runtime || "-"}`;
-          document.getElementById("modal-year").textContent = `Year: ${item.year || "-"}`;
-          document.getElementById("modal-cast").textContent = `Cast: ${item.cast || "-"}`;
+          if (item) {
+            document.getElementById("modal-poster").src = item.poster || "";
+            document.getElementById("modal-title").textContent =
+              item.title || "";
+            document.getElementById("modal-rating").textContent = `Rating: ⭐ ${
+              item.rating || "-"
+            }`;
+            document.getElementById(
+              "modal-category"
+            ).textContent = `Category: ${item.category || "-"}`;
+            document.getElementById("modal-genre").textContent = `Genre: ${
+              item.genre || "-"
+            }`;
+            document.getElementById("modal-runtime").textContent = `Runtime: ${
+              item.runtime || "-"
+            }`;
+            document.getElementById("modal-year").textContent = `Year: ${
+              item.year || "-"
+            }`;
+            document.getElementById("modal-cast").textContent = `Cast: ${
+              item.cast || "-"
+            }`;
 
-          document.getElementById("details-modal").style.display = "block";
-        }
-      })
-      .catch((error) => console.error("Error fetching details:", error));
+            document.getElementById("details-modal").style.display = "block";
+          }
+        })
+        .catch((error) => console.error("Error fetching details:", error));
     }
   });
 
@@ -250,5 +326,4 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "none";
     }
   });
-
 });
