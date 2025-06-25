@@ -14,19 +14,19 @@ echo <<<HTML
     </div>
     <div>
       <input class="search" type="search" placeholder="search RevoTV" name="" id="" />
-      <button class="btn-nav" onclick="return adv_search()">ASearch</button>
+      <button class="btn-nav" onclick="return adv_search()"><a href="#">ASearch</a></button>
       <button class="btn-nav"><a href="../../index.php">Home</a></button>
-      <button class="btn-nav">Actor Profile</button>
+      <button class="btn-nav"><a href="#">Actor Profile</a></button>
       <button class="btn-nav"><a href="#">Watchlist</a></button>
 HTML;
 
 if ($loggedIn) {
-    echo <<<HTML
+  echo <<<HTML
       <button class="btn-nav">Hello, {$userName}</button>
       <button class="btn-nav"><a href="/web-tech-project/app/views/Forms/logout_user.php">Logout</a></button>
 HTML;
 } else {
-    echo <<<HTML
+  echo <<<HTML
       <button class="btn-nav"><a href="/web-tech-project/app/views/Forms/login_user_form.php">Signin</a></button>
 HTML;
 }
