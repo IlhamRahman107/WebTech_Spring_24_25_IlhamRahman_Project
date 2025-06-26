@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <p class="info-rating">⭐ ${item.rating}</p>
               <p class="info-rating">Genre: ${item.genre}</p>
               <p class="info-rating">Year: ${item.year}</p>
-              <button class="info-btn">Watchlist</button>
+              <button class="info-btn add-watchlist">Watchlist</button>
               <button class="info-btn">Trailer</button>
               <button class="info-btn details-btn" data-title="${item.title}">Details</button>
             </div>
@@ -273,4 +273,20 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "none";
     }
   });
+
+  // watchlist
+  fetch("/web-tech-project/app/controllers/add_to_watchlist_controller.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ movie_title, movie_poster }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.message) {
+        alert(data.message);
+      } else {
+        alert("Error: " + data.error);
+      }
+    })
+    .catch(() => alert("Failed to add to watchlist"));
 });
